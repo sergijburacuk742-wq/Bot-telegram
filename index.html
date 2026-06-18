@@ -16,147 +16,42 @@
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            background-color: var(--bg-color); color: var(--text-color);
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden;
         }
 
-        /* --- ЕКРАН ПРИВІТАННЯ --- */
-        #welcome-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            text-align: center;
-            padding: 20px;
-            transition: opacity 0.4s ease-out;
+        #welcome-screen, .step, #success-screen {
+            display: none; flex-direction: column; height: 100%; box-sizing: border-box;
         }
+        
+        #welcome-screen { display: flex; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        
+        .step.active, #success-screen.active { display: flex; padding: 30px 24px; animation: slideIn 0.4s ease-out; }
+        #success-screen.active { justify-content: center; align-items: center; text-align: center; }
 
-        .logo-text {
-            font-size: 36px;
-            font-weight: 900;
-            margin: 0;
-            background: var(--brand-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0px 4px 20px rgba(243, 156, 18, 0.2);
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 
-        .sub-text {
-            font-size: 16px;
-            color: var(--hint-color);
-            margin-top: 8px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 500;
-        }
+        .logo-text { font-size: 36px; font-weight: 900; margin: 0; background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; letter-spacing: 2px; }
+        .sub-text { font-size: 16px; color: var(--hint-color); margin-top: 8px; text-transform: uppercase; letter-spacing: 3px; font-weight: 500; }
 
-        .btn-animated {
-            margin-top: 50px;
-            padding: 18px 36px;
-            font-size: 18px;
-            font-weight: 700;
-            color: #131415;
-            background: var(--brand-gradient);
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
-            animation: pulse 2s infinite;
-            width: 85%;
-            max-width: 320px;
-            text-transform: uppercase;
-        }
+        .btn-animated { margin-top: 50px; padding: 18px 36px; font-size: 18px; font-weight: 700; color: #131415; background: var(--brand-gradient); border: none; border-radius: 16px; cursor: pointer; animation: pulse 2s infinite; width: 85%; max-width: 320px; text-transform: uppercase; }
+        @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); } 50% { transform: scale(1.05); box-shadow: 0 4px 25px rgba(243, 156, 18, 0.7); } 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); } }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
-            50% { transform: scale(1.05); box-shadow: 0 4px 25px rgba(243, 156, 18, 0.7); }
-            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
-        }
+        .step-indicator { font-size: 14px; color: var(--brand-color); font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        label { display: block; font-size: 20px; color: var(--text-color); margin-bottom: 20px; font-weight: 700; line-height: 1.4; }
+        .small-label { font-size: 14px; font-weight: 500; color: var(--hint-color); margin-bottom: 10px; }
+        
+        input, select, textarea { width: 100%; padding: 18px; font-size: 16px; background-color: var(--input-bg); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-color); border-radius: 12px; box-sizing: border-box; outline: none; transition: border-color 0.3s; margin-bottom: 30px; }
+        input:focus, select:focus, textarea:focus { border-color: var(--brand-color); }
 
-        /* --- ПОКРОКОВІ ЕКРАНИ (КРОКИ) --- */
-        .step {
-            display: none; /* Всі кроки приховані за замовчуванням */
-            flex-direction: column;
-            padding: 30px 24px;
-            height: 100%;
-            box-sizing: border-box;
-            animation: slideIn 0.4s ease-out;
-        }
-
-        /* Клас, який показує активний крок */
-        .step.active {
-            display: flex;
-        }
-
-        /* Анімація виїзду екрану з правого боку */
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .step-indicator {
-            font-size: 14px;
-            color: var(--brand-color);
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        label {
-            display: block;
-            font-size: 20px;
-            color: var(--text-color);
-            margin-bottom: 20px;
-            font-weight: 700;
-            line-height: 1.4;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 18px;
-            font-size: 16px;
-            background-color: var(--input-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            border-radius: 12px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s;
-            margin-bottom: 30px;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--brand-color);
-        }
-
-        .btn-next {
-            margin-top: auto; /* Притискає кнопку донизу екрану */
-            margin-bottom: 20px;
-            padding: 18px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #131415;
-            background: var(--brand-gradient);
-            border: none;
-            border-radius: 12px;
-            width: 100%;
-            cursor: pointer;
-        }
+        .btn-next { margin-top: auto; margin-bottom: 20px; padding: 18px; font-size: 18px; font-weight: bold; color: #131415; background: var(--brand-gradient); border: none; border-radius: 12px; width: 100%; cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <!-- СТАРТОВИЙ ЕКРАН -->
     <div id="welcome-screen">
         <div>
             <h1 class="logo-text">🦁 LION TRAFFIC</h1>
@@ -165,8 +60,9 @@
         <button class="btn-animated" onclick="startSurvey()">Заповнити анкету</button>
     </div>
 
+    <!-- КРОК 1: Досвід -->
     <div id="step-1" class="step">
-        <div class="step-indicator">Питання 1 з 4</div>
+        <div class="step-indicator">Питання 1 з 5</div>
         <label>Чи є у тебе досвід в арбітражі?</label>
         <select id="exp">
             <option value="Так">✅ Так, маю досвід</option>
@@ -175,79 +71,120 @@
         <button class="btn-next" onclick="goToStep(1, 2)">Далі ➔</button>
     </div>
 
+    <!-- КРОК 2: Платформи (НОВЕ) -->
     <div id="step-2" class="step">
-        <div class="step-indicator">Питання 2 з 4</div>
+        <div class="step-indicator">Питання 2 з 5</div>
+        <label>З якими джерелами працюєш/працював?</label>
+        <select id="platform" onchange="toggleLinkField()">
+            <option value="Немає/Інше">Немає / Інше</option>
+            <option value="YouTube">▶️ YouTube</option>
+            <option value="TikTok">📱 TikTok</option>
+            <option value="Instagram">📸 Instagram</option>
+            <option value="Facebook">📘 Facebook</option>
+        </select>
+
+        <!-- Це поле приховане за замовчуванням і з'явиться тільки якщо вибрати платформу -->
+        <div id="link-container" style="display: none; margin-top: -10px;">
+            <label class="small-label">Посилання на канал/профіль (необов'язково):</label>
+            <input type="text" id="channel_link" placeholder="https://...">
+        </div>
+
+        <button class="btn-next" onclick="goToStep(2, 3)">Далі ➔</button>
+    </div>
+
+    <!-- КРОК 3: Час -->
+    <div id="step-3" class="step">
+        <div class="step-indicator">Питання 3 з 5</div>
         <label>Скільки часу готовий приділяти роботі щодня?</label>
         <select id="time">
             <option value="1-3 години">1-3 години</option>
             <option value="3-6 годин">3-6 годин</option>
             <option value="Більше 6 годин">Більше 6 годин (Фултайм)</option>
         </select>
-        <button class="btn-next" onclick="goToStep(2, 3)">Далі ➔</button>
-    </div>
-
-    <div id="step-3" class="step">
-        <div class="step-indicator">Питання 3 з 4</div>
-        <label>Скільки тобі повних років?</label>
-        <input type="number" id="age" placeholder="Введи цифру (наприклад: 18)">
         <button class="btn-next" onclick="goToStep(3, 4)">Далі ➔</button>
     </div>
 
+    <!-- КРОК 4: Вік -->
     <div id="step-4" class="step">
-        <div class="step-indicator">Питання 4 з 4</div>
-        <label>Чому саме арбітраж і які в тебе цілі?</label>
-        <textarea id="reason" rows="4" placeholder="Напиши кілька слів про свою мотивацію..."></textarea>
+        <div class="step-indicator">Питання 4 з 5</div>
+        <label>Скільки тобі повних років?</label>
+        <input type="number" id="age" placeholder="Введи цифру (наприклад: 18)">
+        <button class="btn-next" onclick="goToStep(4, 5)">Далі ➔</button>
+    </div>
+
+    <!-- КРОК 5: Причина -->
+    <div id="step-5" class="step">
+        <div class="step-indicator">Питання 5 з 5</div>
+        <label>Розкажи трохи про себе та свої цілі</label>
+        <textarea id="reason" rows="4" placeholder="Напиши кілька слів..."></textarea>
         <button class="btn-next" style="background: #27ae60; color: white;" onclick="finishSurvey()">Відправити заявку ✔️</button>
     </div>
 
+    <!-- ЕКРАН УСПІХУ (НОВЕ) -->
+    <div id="success-screen">
+        <h1 style="font-size: 50px; margin-bottom: 10px;">✅</h1>
+        <h2 style="color: #27ae60;">Анкету успішно відправлено!</h2>
+        <p class="sub-text" style="color: var(--text-color); margin-top: 20px;">Менеджер зв'яжеться з тобою найближчим часом.</p>
+    </div>
+
     <script>
-        // Підключення до Telegram
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        // Ховаємо головний екран, показуємо перший крок
         function startSurvey() {
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('step-1').classList.add('active');
         }
 
-        // Перемикання між кроками
+        // Функція для показу поля з посиланням
+        function toggleLinkField() {
+            let platform = document.getElementById('platform').value;
+            let linkContainer = document.getElementById('link-container');
+            if (platform !== "Немає/Інше") {
+                linkContainer.style.display = 'block';
+            } else {
+                linkContainer.style.display = 'none';
+                document.getElementById('channel_link').value = ''; // Очищаємо, якщо змінили думку
+            }
+        }
+
         function goToStep(currentStep, nextStep) {
-            // Валідація: якщо це крок з віком, перевіряємо чи ввели дані
-            if (currentStep === 3) {
+            if (currentStep === 4) {
                 let age = document.getElementById('age').value;
                 if (!age) {
                     tg.showAlert("⚠️ Будь ласка, вкажи свій вік!");
-                    return; // Зупиняємо перехід, поки не введе вік
+                    return;
                 }
             }
-
-            // Ховаємо поточний крок
             document.getElementById('step-' + currentStep).classList.remove('active');
-            // Показуємо наступний крок
             document.getElementById('step-' + nextStep).classList.add('active');
         }
 
-        // Завершення анкети і відправка даних
         function finishSurvey() {
             let reason = document.getElementById('reason').value;
-
-            // Валідація тексту
             if (!reason.trim()) {
-                tg.showAlert("⚠️ Будь ласка, напиши хоча б пару слів про свою мотивацію!");
+                tg.showAlert("⚠️ Будь ласка, розкажи трохи про себе!");
                 return;
             }
 
-            // Збираємо всі відповіді з усіх кроків
-            let data = {
+            // Збираємо дані
+            let data = { 
                 exp: document.getElementById("exp").value,
+                platform: document.getElementById("platform").value,
+                channel_link: document.getElementById("channel_link").value || "Не вказано",
                 time: document.getElementById("time").value,
                 age: document.getElementById("age").value,
                 reason: reason
             };
+            
+            // Ховаємо останній крок і показуємо екран успіху
+            document.getElementById('step-5').classList.remove('active');
+            document.getElementById('success-screen').classList.add('active');
 
-            // Відправляємо у твій Python-бот
-            tg.sendData(JSON.stringify(data));
+            // Відправляємо дані у бота і закриваємо міні-застосунок через 2 секунди
+            setTimeout(() => {
+                tg.sendData(JSON.stringify(data));
+            }, 2000);
         }
     </script>
 </body>
