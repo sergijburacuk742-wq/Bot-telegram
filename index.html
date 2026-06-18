@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LION TRAFFIC</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background-color: #1e1e24; color: white; font-family: sans-serif; padding: 20px; }
+        input, select { width: 100%; padding: 10px; margin-top: 10px; margin-bottom: 20px; border-radius: 5px; }
+        button { background-color: #f39c12; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">🦁 LION TRAFFIC</h1>
+    <p>Заповни анкету для вступу в команду:</p>
+
+    <label>Скільки тобі років?</label>
+    <input type="number" id="age" placeholder="Введи вік">
+
+    <label>Досвід роботи:</label>
+    <select id="exp">
+        <option value="Так">Є досвід</option>
+        <option value="Ні">Немає досвіду</option>
+    </select>
+
+    <button onclick="sendData()">Відправити заявку</button>
+
+    <script>
+        // Ініціалізуємо Telegram Web App
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Розгортаємо на весь екран
+
+        function sendData() {
+            let age = document.getElementById("age").value;
+            let exp = document.getElementById("exp").value;
+
+            // Формуємо дані
+            let data = { age: age, exp: exp };
+
+            // Відправляємо дані назад у Python-бота
+            tg.sendData(JSON.stringify(data));
+        }
+    </script>
+</body>
+</html>
