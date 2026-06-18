@@ -6,11 +6,10 @@
     <title>LION TRAFFIC</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Базові налаштування кольорів (стилістика Telegram + Золото Лева) */
         :root {
             --bg-color: #131415;
             --text-color: #ffffff;
-            --brand-color: #f39c12; /* Золотий/Оранжевий */
+            --brand-color: #f39c12;
             --brand-gradient: linear-gradient(90deg, #f39c12, #f1c40f);
             --input-bg: rgba(255, 255, 255, 0.08);
             --hint-color: #8e8e93;
@@ -61,19 +60,18 @@
             font-weight: 500;
         }
 
-        /* Анімована кнопка */
         .btn-animated {
             margin-top: 50px;
             padding: 18px 36px;
             font-size: 18px;
             font-weight: 700;
-            color: #131415; /* Темний текст на світлій кнопці */
+            color: #131415;
             background: var(--brand-gradient);
             border: none;
             border-radius: 16px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
-            animation: pulse 2s infinite; /* Додаємо анімацію пульсації */
+            animation: pulse 2s infinite;
             width: 85%;
             max-width: 320px;
             text-transform: uppercase;
@@ -85,48 +83,48 @@
             100% { transform: scale(1); box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); }
         }
 
-        /* --- ЕКРАН АНКЕТИ --- */
-        #form-screen {
-            display: none; /* Приховано за замовчуванням */
+        /* --- ПОКРОКОВІ ЕКРАНИ (КРОКИ) --- */
+        .step {
+            display: none; /* Всі кроки приховані за замовчуванням */
             flex-direction: column;
-            padding: 24px;
+            padding: 30px 24px;
             height: 100%;
-            overflow-y: auto;
             box-sizing: border-box;
-            animation: fadeIn 0.5s ease-in;
+            animation: slideIn 0.4s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Клас, який показує активний крок */
+        .step.active {
+            display: flex;
         }
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 30px;
+        /* Анімація виїзду екрану з правого боку */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .form-header h2 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 800;
-        }
-
-        .form-group {
+        .step-indicator {
+            font-size: 14px;
+            color: var(--brand-color);
+            font-weight: bold;
             margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         label {
             display: block;
-            font-size: 14px;
-            color: var(--hint-color);
-            margin-bottom: 8px;
-            font-weight: 500;
+            font-size: 20px;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.4;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             font-size: 16px;
             background-color: var(--input-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -134,16 +132,17 @@
             border-radius: 12px;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.3s, background-color 0.3s;
+            transition: border-color 0.3s;
+            margin-bottom: 30px;
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--brand-color);
-            background-color: rgba(255, 255, 255, 0.12);
         }
 
-        .btn-submit {
-            margin-top: 10px;
+        .btn-next {
+            margin-top: auto; /* Притискає кнопку донизу екрану */
+            margin-bottom: 20px;
             padding: 18px;
             font-size: 18px;
             font-weight: bold;
@@ -153,7 +152,6 @@
             border-radius: 12px;
             width: 100%;
             cursor: pointer;
-            margin-bottom: 30px; /* Відступ знизу, щоб було зручно скролити */
         }
     </style>
 </head>
@@ -164,77 +162,91 @@
             <h1 class="logo-text">🦁 LION TRAFFIC</h1>
             <p class="sub-text">Набір у команду</p>
         </div>
-        <button class="btn-animated" onclick="showForm()">Заповнити анкету</button>
+        <button class="btn-animated" onclick="startSurvey()">Заповнити анкету</button>
     </div>
 
-    <div id="form-screen">
-        <div class="form-header">
-            <h2>Анкета кандидата</h2>
-        </div>
+    <div id="step-1" class="step">
+        <div class="step-indicator">Питання 1 з 4</div>
+        <label>Чи є у тебе досвід в арбітражі?</label>
+        <select id="exp">
+            <option value="Так">✅ Так, маю досвід</option>
+            <option value="Ні">❌ Ні, я новачок</option>
+        </select>
+        <button class="btn-next" onclick="goToStep(1, 2)">Далі ➔</button>
+    </div>
 
-        <div class="form-group">
-            <label>Чи є досвід в арбітражі?</label>
-            <select id="exp">
-                <option value="Так">✅ Так, маю досвід</option>
-                <option value="Ні">❌ Ні, я новачок</option>
-            </select>
-        </div>
+    <div id="step-2" class="step">
+        <div class="step-indicator">Питання 2 з 4</div>
+        <label>Скільки часу готовий приділяти роботі щодня?</label>
+        <select id="time">
+            <option value="1-3 години">1-3 години</option>
+            <option value="3-6 годин">3-6 годин</option>
+            <option value="Більше 6 годин">Більше 6 годин (Фултайм)</option>
+        </select>
+        <button class="btn-next" onclick="goToStep(2, 3)">Далі ➔</button>
+    </div>
 
-        <div class="form-group">
-            <label>Скільки часу готовий приділяти?</label>
-            <select id="time">
-                <option value="1-3 години">1-3 години на день</option>
-                <option value="3-6 годин">3-6 годин на день</option>
-                <option value="Більше 6 годин">Більше 6 годин (Фултайм)</option>
-            </select>
-        </div>
+    <div id="step-3" class="step">
+        <div class="step-indicator">Питання 3 з 4</div>
+        <label>Скільки тобі повних років?</label>
+        <input type="number" id="age" placeholder="Введи цифру (наприклад: 18)">
+        <button class="btn-next" onclick="goToStep(3, 4)">Далі ➔</button>
+    </div>
 
-        <div class="form-group">
-            <label>Скільки тобі років?</label>
-            <input type="number" id="age" placeholder="Наприклад: 18">
-        </div>
-
-        <div class="form-group">
-            <label>Чому саме арбітраж?</label>
-            <textarea id="reason" rows="3" placeholder="Розкажи коротко про свої цілі..."></textarea>
-        </div>
-
-        <button class="btn-submit" onclick="sendData()">Відправити заявку</button>
+    <div id="step-4" class="step">
+        <div class="step-indicator">Питання 4 з 4</div>
+        <label>Чому саме арбітраж і які в тебе цілі?</label>
+        <textarea id="reason" rows="4" placeholder="Напиши кілька слів про свою мотивацію..."></textarea>
+        <button class="btn-next" style="background: #27ae60; color: white;" onclick="finishSurvey()">Відправити заявку ✔️</button>
     </div>
 
     <script>
-        // Ініціалізуємо Telegram Web App
+        // Підключення до Telegram
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Відкриваємо на весь екран
+        tg.expand();
 
-        // Функція для переходу від привітання до анкети
-        function showForm() {
+        // Ховаємо головний екран, показуємо перший крок
+        function startSurvey() {
             document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('form-screen').style.display = 'flex';
+            document.getElementById('step-1').classList.add('active');
         }
 
-        // Функція збору та відправки даних у бота
-        function sendData() {
-            let exp = document.getElementById("exp").value;
-            let time = document.getElementById("time").value;
-            let age = document.getElementById("age").value;
-            let reason = document.getElementById("reason").value;
+        // Перемикання між кроками
+        function goToStep(currentStep, nextStep) {
+            // Валідація: якщо це крок з віком, перевіряємо чи ввели дані
+            if (currentStep === 3) {
+                let age = document.getElementById('age').value;
+                if (!age) {
+                    tg.showAlert("⚠️ Будь ласка, вкажи свій вік!");
+                    return; // Зупиняємо перехід, поки не введе вік
+                }
+            }
 
-            // Перевірка, чи ввели вік
-            if(!age) {
-                tg.showAlert("⚠️ Будь ласка, вкажи свій вік!");
+            // Ховаємо поточний крок
+            document.getElementById('step-' + currentStep).classList.remove('active');
+            // Показуємо наступний крок
+            document.getElementById('step-' + nextStep).classList.add('active');
+        }
+
+        // Завершення анкети і відправка даних
+        function finishSurvey() {
+            let reason = document.getElementById('reason').value;
+
+            // Валідація тексту
+            if (!reason.trim()) {
+                tg.showAlert("⚠️ Будь ласка, напиши хоча б пару слів про свою мотивацію!");
                 return;
             }
 
-            // Формуємо пакет даних
+            // Збираємо всі відповіді з усіх кроків
             let data = {
-                exp: exp,
-                time: time,
-                age: age,
+                exp: document.getElementById("exp").value,
+                time: document.getElementById("time").value,
+                age: document.getElementById("age").value,
                 reason: reason
             };
 
-            // Відправляємо дані назад у Python
+            // Відправляємо у твій Python-бот
             tg.sendData(JSON.stringify(data));
         }
     </script>
